@@ -8,6 +8,6 @@
     'category': 'Uncategorized',
     'version': '11.0.1.0.0',
     'depends': ['base'],
-    'data': ['views.xml'],
+    'data': ['data/views.xml'],
     'demo': ['demo.xml'],
 }
