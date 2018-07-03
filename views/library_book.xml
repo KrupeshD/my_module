@@ -23,21 +23,20 @@
         <form>
 
           <group>
+            <field name="active"/>
             <field name="name"/>
             <field name="description"/>
             <field name="notes"/>
             <field name="state"/>
             <field name="cover"/>
+            <field name="cost_price"/>
             <field name="pages"/>
             <field name="reader_rating"/>
-
             <field name="author_ids" widget="many2many_tags"/>
           </group>
           <group>
             <field name="date_release"/>
           </group>
-
-
 
         </form>
       </field>

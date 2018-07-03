@@ -1,4 +1,6 @@
 from odoo import models, fields
+from odoo.addons import decimal_precision as dp
+
 class LibraryBook(models.Model):
 
     # structural attributes defining the behavior #
@@ -57,6 +59,9 @@ class LibraryBook(models.Model):
         'Reader Average Rating',
         digits=(14, 4),  # Optional precision (total, decimals),
     )
+
+    cost_price = fields.Float(
+        'Book Cost', dp.get_precision('Book Price')) # Getting precesion from decimal config in Odoo.
 
     active = fields.Boolean('Active', default=True)
 
