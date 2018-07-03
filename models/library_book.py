@@ -58,3 +58,8 @@ class LibraryBook(models.Model):
         digits=(14, 4),  # Optional precision (total, decimals),
     )
 
+    active = fields.Boolean('Active', default=True)
+
+
+
+
