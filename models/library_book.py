@@ -66,5 +66,14 @@ class LibraryBook(models.Model):
     active = fields.Boolean('Active', default=True)
 
 
+    currency_id = fields.Many2one(
+        'res.currency', string='Currency')
+
+    retail_price = fields.Monetary(
+        'Retail Price',
+        # optional: currency_field='currency_id',
+    )
+
+
 
 
