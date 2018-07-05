@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.addons import decimal_precision as dp
+from odoo.fields import Date as fDate
 
 
 class ResPartner(models.Model):
@@ -97,6 +98,15 @@ class LibraryBook(models.Model):
         domain=[],
     )
 
+    age_days = fields.Float(
+        string='Days Since Release',
+        compute='_compute_age',
+        inverse='_inverse_age',
+        search='_search_age',
+        store=False,
+        compute_sudo=False,
+    )
+
     @api.constrains('date_release')
     def _check_release_date( self ):
         for record in self:
@@ -106,7 +116,29 @@ class LibraryBook(models.Model):
                     'Release date must be in the past')
 
 
+    @api.depends('date_release')
+    def _compute_age( self ):
+        today = fDate.from_string(fDate.today())
+        for book in self.filtered('date_release'):
+            delta = (today -
+                     fDate.from_string(book.date_release))
+            book.age_days = delta.days
 
+    def _inverse_age( self ):
+        today = fDate.from_string(fDate.context_today(self))
+        for book in self.filtered('date_release'):
+            d = today - timedelta(days=book.age_days)
+            book.date_release = fDate.to_string(d)
 
-
-
+    def _search_age( self, operator, value ):
+        today = fDate.from_string(fDate.context_today(self))
+        value_days = timedelta(days=value)
+        value_date = fDate.to_string(today - value_days)
+        # convert the operator:
+        # book with age > value have a date < value_date
+        operator_map = {
+            '>': '<', '>=': '<=',
+            '<': '>', '<=': '>=',
+        }
+        new_op = operator_map.get(operator, operator)
+        return [('date_release', new_op, value_date)]
