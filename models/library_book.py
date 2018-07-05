@@ -112,6 +112,15 @@ class LibraryBook(models.Model):
         compute_sudo=False,
     )
 
+    @api.model
+    def _referencable_models( self ):
+        models = self.env['res.request.link'].search([])
+        return [(x.object, x.name) for x in models]
+
+    ref_doc_id = fields.Reference(
+        selection='_referencable_models',
+        string='Reference Document')
+
     @api.constrains('date_release')
     def _check_release_date( self ):
         for record in self:
