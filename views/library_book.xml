@@ -29,8 +29,13 @@
             <field name="notes"/>
             <field name="state"/>
             <field name="cover"/>
-            <field name="cost_price"/>
+          </group>
+
+           <group>
             <field name="retail_price"/>
+            <field name="cost_price"/>
+           </group>
+           <group>
             <field name="pages"/>
             <field name="reader_rating"/>
             <field name="author_ids" widget="many2many_tags"/>
