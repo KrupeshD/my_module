@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 from odoo.addons import decimal_precision as dp
 
 
@@ -26,6 +26,11 @@ class LibraryBook(models.Model):
     # Fields #
 
     name = fields.Char('Title', required=True)
+    _sql_constraints = [
+        ('name_uniq',
+         'UNIQUE (name)',
+         'Book title must be unique.')
+    ]
 
     short_name = fields.Char(
         string='Short Title',
@@ -91,6 +96,14 @@ class LibraryBook(models.Model):
         context={},
         domain=[],
     )
+
+    @api.constrains('date_release')
+    def _check_release_date( self ):
+        for record in self:
+            if (record.date_release and
+                    record.date_release > fields.Date.today()):
+                raise models.ValidationError(
+                    'Release date must be in the past')
 
 
 
