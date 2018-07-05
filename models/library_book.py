@@ -142,12 +142,12 @@ class LibraryBook(models.Model):
     def _inverse_age( self ):
         today = fDate.from_string(fDate.context_today(self))
         for book in self.filtered('date_release'):
-            d = today - fDate.timedelta(days=book.age_days)
+            d = today - timedelta(days=book.age_days)
             book.date_release = fDate.to_string(d)
 
     def _search_age( self, operator, value ):
         today = fDate.from_string(fDate.context_today(self))
-        value_days = fDate.timedelta(days=value)
+        value_days = timedelta(days=value)
         value_date = fDate.to_string(today - value_days)
         # convert the operator:
         # book with age > value have a date < value_date
