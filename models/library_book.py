@@ -16,6 +16,11 @@ class ResPartner(models.Model):
         # relation='library_book_res_partner_rel'  # optional
     )
 
+    @api.depends('authored_book_ids')
+    def _compute_count_books( self ):
+        for r in self:
+            r.count_books = len(r.authored_book_ids)
+
 
 class LibraryBook(models.Model):
 

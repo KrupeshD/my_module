@@ -25,6 +25,7 @@
           <group>
             <field name="active"/>
             <field name="name"/>
+            <field name="short_name"/>
             <field name="description"/>
             <field name="notes"/>
             <field name="state"/>
