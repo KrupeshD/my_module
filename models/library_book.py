@@ -4,6 +4,14 @@ from odoo.fields import Date as fDate
 from datetime import timedelta
 
 
+class BaseArchive(models.AbstractModel):
+    _name = 'base.archive'
+    active = fields.Boolean(default=True)
+
+    def do_archive( self ):
+        for record in self:
+            record.active = not record.active
+
 class ResPartner(models.Model):
     _inherit = 'res.partner'
     published_book_ids = fields.One2many(
@@ -22,10 +30,24 @@ class ResPartner(models.Model):
             r.count_books = len(r.authored_book_ids)
 
 
+
+class LibraryMember(models.Model):
+    _name = 'library.member'
+    _inherits = {'res.partner': 'partner_id'}
+    partner_id = fields.Many2one(
+        'res.partner',
+        ondelete='cascade')
+    date_start = fields.Date('Member Since')
+    date_end = fields.Date('Termination Date')
+    member_number = fields.Char()
+    date_of_birth = fields.Date('Date of birth')
+
+
 class LibraryBook(models.Model):
 
     # structural attributes defining the behavior #
     _name = 'library.book'
+    _inherit = ['base.archive']
     _description = 'Library Book'
     _order = 'date_release desc, name'
     _rec_name = 'short_name'
@@ -89,7 +111,7 @@ class LibraryBook(models.Model):
     cost_price = fields.Float(
         'Book Cost', dp.get_precision('Book Price')) # Getting precesion from decimal config in Odoo.
 
-    active = fields.Boolean('Active', default=True)
+    ##active = fields.Boolean('Active', default=True)
 
 
     currency_id = fields.Many2one('res.currency', string='Currency')
