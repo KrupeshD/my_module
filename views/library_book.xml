@@ -64,6 +64,9 @@
         <tree>
           <field name="name"/>
           <field name="date_release"/>
+          <field name="publisher_id"/>
+          <field name="retail_price"/>
+
         </tree>
       </field>
     </record>
