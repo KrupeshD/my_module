@@ -71,11 +71,43 @@ class LibraryBook(models.Model):
     author_ids = fields.Many2many('res.partner',string='Authors')
 
     notes = fields.Text('Internal Notes')
+
+
+######
+# Field -> State of a Book #
+#####
+
     state = fields.Selection(
-        [('draft', 'Not Available'),
+        [('draft', ' Unavailable'),
          ('available', 'Available'),
+         ('borrowed', 'Borrowed'),
          ('lost', 'Lost')],
         'State')
+
+    # Allowed state changes #
+
+    @api.model
+    def is_allowed_transition( self, old_state, new_state ):
+        allowed = [('draft', 'available'),
+                   ('available', 'borrowed'),
+                   ('borrowed', 'available'),
+                   ('available', 'lost'),
+                   ('borrowed', 'lost'),
+                   ('lost', 'available')]
+        return (old_state, new_state) in allowed
+
+    @api.multi
+    def change_state(self, new_state):
+        for book in self:
+            if book.is_allowed_transition(book.state,
+                                          new_state):
+                book.state = new_state
+            else:
+                continue
+
+######
+    # Field -> State of a Book #
+#####
 
     description = fields.Html(
         string='Description',
@@ -184,3 +216,12 @@ class LibraryBook(models.Model):
         }
         new_op = operator_map.get(operator, operator)
         return [('date_release', new_op, value_date)]
+
+
+    # ...
+    @api.model
+    def get_all_library_members( self ):
+        library_member_model = self.env['library.member']
+        return library_member_model.search([])
+
+        #...
