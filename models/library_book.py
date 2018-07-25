@@ -81,7 +81,8 @@ class LibraryBook(models.Model):
         [('draft', ' Unavailable'),
          ('available', 'Available'),
          ('borrowed', 'Borrowed'),
-         ('lost', 'Lost')],
+         ('lost', 'Lost'),
+         ('chut','Chutiya')],
         'State')
 
     # Allowed state changes #

@@ -66,6 +66,7 @@
           <field name="date_release"/>
           <field name="publisher_id"/>
           <field name="retail_price"/>
+          <field name="state"/>
 
         </tree>
       </field>
