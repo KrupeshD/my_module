@@ -82,7 +82,7 @@ class LibraryBook(models.Model):
          ('available', 'Available'),
          ('borrowed', 'Borrowed'),
          ('lost', 'Lost'),
-         ('chut','Chutiya')],
+        ],
         'State')
 
     # Allowed state changes #
