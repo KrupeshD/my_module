@@ -17,7 +17,6 @@ class LibraryLoanWizard(models.TransientModel):
     member_id = fields.Many2one('library.member', string='Member')
     book_ids = fields.Many2many('library.book', string='Books')
 
-
     @api.multi
     def record_loans(self):
         for wizard in self:
@@ -26,7 +25,7 @@ class LibraryLoanWizard(models.TransientModel):
             for book in books:
                 values = wizard._prepare_loan(book)
                 loan.create(values)
-     @api.multi
-     def _prepare_loan(self, book):
-         return {'member_id': self.member_id.id,
+    @api.multi
+    def _prepare_loan(self, book):
+        return {'member_id': self.member_id.id,
                  'book_id': book.id}
